@@ -50,7 +50,14 @@ Setiap kali ada perubahan di repo, file baru dibikin otomatis. Mau bikin ulang m
 5. **Testing → Closed testing**: upload `.aab`, undang minimal 12 tester (email Gmail), tunggu 14 hari.
 6. Setelah itu ajukan **Production**.
 
-Kunci tanda tangan (upload key) sudah disimpan di GitHub Secrets. **Simpan juga file kunci cadangan yang dikirim ke kamu.** Kalau hilang, kamu harus minta reset kunci ke Google.
+**Kunci tanda tangan (wajib sebelum upload pertama):** file `.aab` harus ditandatangani pakai kunci upload milikmu. Kuncinya sudah dikirim ke kamu lewat chat (jangan di-upload ke repo). Masukkan ke GitHub sekali saja:
+
+1. Repo ini → **Settings → Secrets and variables → Actions → New repository secret**.
+2. Name `PIX_KEYSTORE_B64` → isi dengan seluruh teks dari file `pixpush-upload-key-base64.txt`.
+3. Name `PIX_KEY_PASSWORD` → isi dengan password kunci.
+4. **Actions → Build Android → Run workflow**. File `.aab` yang baru sudah bertanda tangan.
+
+Simpan file kunci dan password di tempat aman (misal Google Drive pribadi). Kalau hilang, kamu harus minta reset kunci upload ke Google.
 
 ---
 

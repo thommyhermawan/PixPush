@@ -50,15 +50,18 @@ jobs:
           KEYSTORE_B64: ${{ secrets.PIX_KEYSTORE_B64 }}
         run: |
           if [ -n "$KEYSTORE_B64" ]; then
-            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.p12"
+            echo "$KEYSTORE_B64" | tr -d ' \n\r' | base64 -d > "$RUNNER_TEMP/upload.p12"
             echo "PIX_KEYSTORE=$RUNNER_TEMP/upload.p12" >> "$GITHUB_ENV"
+            echo "Signing with upload key"
+          else
+            echo "::warning::Secret PIX_KEYSTORE_B64 belum diisi. File .aab belum bertanda tangan, jadi belum bisa di-upload ke Play Store. APK tes tetap bisa dipasang."
           fi
 
       - name: Build APK (for testing) and AAB (for Play Store)
         working-directory: android
         env:
-          PIX_KEYSTORE_PASSWORD: ${{ secrets.PIX_KEYSTORE_PASSWORD }}
-          PIX_KEY_ALIAS: ${{ secrets.PIX_KEY_ALIAS }}
+          PIX_KEYSTORE_PASSWORD: ${{ secrets.PIX_KEY_PASSWORD }}
+          PIX_KEY_ALIAS: pixpush
           PIX_KEY_PASSWORD: ${{ secrets.PIX_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
