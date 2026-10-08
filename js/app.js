@@ -31,6 +31,7 @@ function canAct(){
 function mountGame(id){
   if(C.game && C.game.unmount) C.game.unmount();
   C.game = window.Games[id];
+  $('scr-game').dataset.game = id;
   C.game.mount($('stage'), ctrl, $('g-extra'));
 }
 function beginGame(mode, gameId){

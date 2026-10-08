@@ -1,6 +1,9 @@
 name: Build iOS
 
 on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'store/**']
   workflow_dispatch:
     inputs:
       upload:

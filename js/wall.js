@@ -155,7 +155,7 @@ const Game = {
     return best;
   },
   reasonText(){ return 'Sampai duluan ke seberang!'; },
-  hint(st){ return this._mode==='wall' ? 'Tap papan buat taruh tembok, putar kalau perlu, lalu Pasang.' : 'Tap kotak kuning buat jalan, atau pilih Tembok.'; },
+  hint(st){ return this._mode==='wall' ? 'Tap papan buat taruh tembok, lalu Pasang.' : 'Tap kotak kuning buat jalan, atau pilih Tembok.'; },
 
   /* ---------- view ---------- */
   _ctrl:null, _stage:null, _extra:null, _mode:'move', _ghost:null, _o:'h', _cells:null, _pawns:null, _walls:null, _ghostEl:null, _hit:null,
@@ -180,9 +180,9 @@ const Game = {
     this._hit = document.createElement('div'); this._hit.className = 'wl-hit'; grid.appendChild(this._hit);
     this._hit.addEventListener('pointerdown', e=>this._tapHit(e));
     extraEl.innerHTML =
-      '<div class="seg" role="radiogroup" aria-label="Aksi" style="flex:1 1 100%">'+
+      '<div class="seg" role="radiogroup" aria-label="Aksi" style="flex:1 1 140px">'+
         '<button role="radio" data-wm="move">Jalan</button><button role="radio" data-wm="wall">Tembok</button></div>'+
-      '<button class="btn small" data-wa="rot" aria-label="Putar tembok">Putar ↻</button>'+
+      '<button class="btn small" data-wa="rot" aria-label="Putar tembok">↻</button>'+
       '<button class="btn small primary" data-wa="place">Pasang</button>'+
       '<div class="wl-counts"><div class="walls-left" data-wl="0"></div><span class="muted small">sisa tembok</span><div class="walls-left" data-wl="1"></div></div>';
     extraEl.querySelectorAll('[data-wm]').forEach(b=>b.addEventListener('click', ()=>{ this._mode = b.dataset.wm; this._ghost = null; Pix.Sound.tap(); this._ctrl.refresh(); }));
