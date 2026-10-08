@@ -1,0 +1,33 @@
+{
+  "name": "pixpush",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PixPush: PUSH dan WALL, dua game strategi pixel.",
+  "pixpush": {
+    "appId": "com.thommyhermawan.pixpush",
+    "appName": "PixPush",
+    "versionCode": 1,
+    "admobAppIdAndroid": "ca-app-pub-3940256099942544~3347511713",
+    "admobAppIdIos": "ca-app-pub-3940256099942544~1458002511",
+    "trackingText": "Izin ini dipakai biar iklan yang muncul lebih sesuai buat kamu. PixPush tetap gratis berkat iklan."
+  },
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "native:setup": "node scripts/native-setup.mjs",
+    "test:engine": "node scripts/test-engine.mjs"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.0.0",
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/app": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0",
+    "peerjs": "1.5.4",
+    "@fontsource/nunito": "^5.0.0",
+    "@fontsource/pixelify-sans": "^5.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.0",
+    "@capacitor/cli": "^8.0.0"
+  }
+}

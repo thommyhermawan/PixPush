@@ -1,0 +1,79 @@
+name: Build Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md']
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install packages
+        run: npm install --no-audit --no-fund
+
+      - name: Check game logic
+        run: npm run test:engine
+
+      - name: Build web files
+        run: npm run build:web
+
+      - name: Create Android project
+        run: npx cap add android
+
+      - name: Make icons and splash
+        run: npx capacitor-assets generate --android --iconBackgroundColor '#2b2147' --iconBackgroundColorDark '#2b2147' --splashBackgroundColor '#2b2147' --splashBackgroundColorDark '#2b2147'
+
+      - name: Patch project (AdMob, version, signing)
+        run: npm run native:setup
+        env:
+          PIX_VERSION_CODE: ${{ github.run_number }}
+
+      - name: Sync
+        run: npx cap sync android
+
+      - name: Prepare signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.PIX_KEYSTORE_B64 }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/upload.p12"
+            echo "PIX_KEYSTORE=$RUNNER_TEMP/upload.p12" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build APK (for testing) and AAB (for Play Store)
+        working-directory: android
+        env:
+          PIX_KEYSTORE_PASSWORD: ${{ secrets.PIX_KEYSTORE_PASSWORD }}
+          PIX_KEY_ALIAS: ${{ secrets.PIX_KEY_ALIAS }}
+          PIX_KEY_PASSWORD: ${{ secrets.PIX_KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug bundleRelease
+
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixpush-test-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 14
+
+      - name: Upload Play Store bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: pixpush-playstore-aab
+          path: android/app/build/outputs/bundle/release/*.aab
+          retention-days: 30

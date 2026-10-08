@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>PixPush</title>
+<meta name="description" content="PixPush: dua game strategi pixel, PUSH dan WALL. Lawan komputer, berdua, atau online.">
+<meta name="theme-color" content="#2b2147">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PixPush">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito:wght@500;700;800&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- HOME -->
+  <section class="screen" id="scr-home">
+    <div class="logo" aria-label="PixPush">
+      <div class="logo-tiles" aria-hidden="true"><i class="t0"></i><i class="t1"></i><i class="te"></i><i class="t1"></i><i class="t0"></i><i class="t1"></i></div>
+      <h1>Pix<span>Push</span></h1>
+      <p>Dua game strategi kecil. Mikir dikit, menang banyak.</p>
+    </div>
+
+    <div class="games" role="radiogroup" aria-label="Pilih game">
+      <button class="game-card" role="radio" data-game="push" aria-checked="true">
+        <span class="gc-art push-art" aria-hidden="true"></span>
+        <span class="gc-text"><b>PUSH</b><small>Geser kubus dari pinggir. 5 berjajar menang.</small></span>
+      </button>
+      <button class="game-card" role="radio" data-game="wall" aria-checked="false">
+        <span class="gc-art wall-art" aria-hidden="true"></span>
+        <span class="gc-text"><b>WALL</b><small>Lari ke seberang, halangi lawan pakai tembok.</small></span>
+      </button>
+    </div>
+
+    <div class="modes">
+      <button class="btn big primary" data-mode="cpu">Lawan Komputer</button>
+      <div class="seg" id="level" role="radiogroup" aria-label="Level komputer">
+        <button role="radio" data-level="0" aria-checked="false">Mudah</button>
+        <button role="radio" data-level="1" aria-checked="true">Sedang</button>
+        <button role="radio" data-level="2" aria-checked="false">Sulit</button>
+      </div>
+      <button class="btn big" data-mode="local">Berdua di 1 HP</button>
+      <button class="btn big" data-mode="online">Main Online</button>
+    </div>
+
+    <p class="stats" id="stats"></p>
+    <div class="ad-slot" id="ad-home" hidden></div>
+
+    <nav class="home-foot">
+      <button class="link" id="btn-rules">Cara main</button>
+      <button class="link" id="btn-settings">Pengaturan</button>
+      <button class="link" id="btn-install" hidden>Pasang aplikasi</button>
+      <a class="link" href="privacy.html">Privasi</a>
+    </nav>
+  </section>
+
+  <!-- LOBBY -->
+  <section class="screen" id="scr-lobby" hidden>
+    <header class="bar">
+      <button class="icon-btn" data-back aria-label="Kembali"><svg viewBox="0 0 16 16"><path d="M10 2H8v2H6v2H4v4h2v2h2v2h2v-2H8v-2H6V6h2V4h2z"/></svg></button>
+      <h2 id="lobby-title">Main Online</h2>
+      <span class="bar-gap"></span>
+    </header>
+    <div class="panel">
+      <h3>Bikin room</h3>
+      <p class="muted">Kamu dapat kode 4 huruf. Kirim ke teman biar dia gabung.</p>
+      <button class="btn big primary" id="on-create">Bikin room</button>
+    </div>
+    <div class="panel">
+      <h3>Gabung room</h3>
+      <div class="join">
+        <input id="on-code" maxlength="4" placeholder="KODE" autocomplete="off" autocapitalize="characters" aria-label="Kode room">
+        <button class="btn" id="on-join">Gabung</button>
+      </div>
+    </div>
+    <p class="note" id="on-note" role="status">Halaman pembuat room harus tetap kebuka selama main.</p>
+  </section>
+
+  <!-- GAME -->
+  <section class="screen" id="scr-game" hidden>
+    <header class="bar">
+      <button class="icon-btn" id="g-back" aria-label="Menu"><svg viewBox="0 0 16 16"><path d="M10 2H8v2H6v2H4v4h2v2h2v2h2v-2H8v-2H6V6h2V4h2z"/></svg></button>
+      <div class="scoreboard" id="scoreboard"></div>
+      <button class="icon-btn" id="g-help" aria-label="Cara main"><svg viewBox="0 0 16 16"><path d="M5 2h6v2h2v4h-2v2H9v2H7V9h2V7h2V4H5v2H3V4h2zM7 13h2v2H7z"/></svg></button>
+    </header>
+
+    <div class="status" id="status" role="status">
+      <span class="turn-chip" id="turn-chip"></span>
+      <div class="msg"><b id="msg-main"></b><small id="msg-sub"></small></div>
+    </div>
+
+    <div class="stage-wrap"><div class="stage" id="stage"></div></div>
+
+    <div class="extra" id="g-extra"></div>
+
+    <div class="room-row" id="room-row" hidden>
+      <span>Room</span><b class="code" id="room-code">----</b>
+      <button class="btn small" id="room-share">Ajak teman</button>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="g-undo"><svg viewBox="0 0 16 16"><path d="M6 2h2v2h4v2h2v6h-2v2H6v-2h6V6H8v2H6V6H4V4h2z"/></svg>Undo</button>
+      <button class="btn" id="g-restart"><svg viewBox="0 0 16 16"><path d="M7 1h2v2h3v2h2v8h-2v2H4v-2H2V9h2v4h8V5H9v2H7V5H5V3h2z"/></svg>Ulang</button>
+    </div>
+  </section>
+
+  <!-- SHEETS -->
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div class="sheet" id="sheet-rules" role="dialog" aria-modal="true" aria-labelledby="rules-h" hidden>
+    <div class="sheet-head"><h2 id="rules-h">Cara main</h2><button class="icon-btn" data-close aria-label="Tutup"><svg viewBox="0 0 16 16"><path d="M3 3h2v2h2v2h2V5h2V3h2v2h-2v2H9v2h2v2h2v2h-2v-2H9V9H7v2H5v2H3v-2h2V9h2V7H5V5H3z"/></svg></button></div>
+    <div class="seg" id="rules-tabs" role="tablist">
+      <button role="tab" data-rules="push" aria-selected="true">PUSH</button>
+      <button role="tab" data-rules="wall" aria-selected="false">WALL</button>
+    </div>
+    <div class="rules" id="rules-push">
+      <div class="demo push-demo" aria-hidden="true"><i class="d0"></i><i></i><i class="d1"></i><i></i><i class="d0 mv"></i></div>
+      <ol>
+        <li>Papan 5×5 berisi kubus kosong. Pemain gantian jalan.</li>
+        <li>Ambil satu kubus dari <b>pinggir papan</b>: yang kosong atau warnamu sendiri. Kubus lawan nggak boleh diambil.</li>
+        <li>Dorong kubus itu masuk lagi dari <b>ujung lain</b> baris atau kolomnya. Kubus lain ikut geser satu kotak. Kubus yang kamu masukkan jadi warnamu.</li>
+        <li>Menang kalau punya <b>5 warnamu berjajar</b>: mendatar, menurun, atau diagonal.</li>
+        <li>Awas: kalau doronganmu bikin garis 5 buat lawan, <b>lawan yang menang</b>.</li>
+      </ol>
+    </div>
+    <div class="rules" id="rules-wall" hidden>
+      <div class="demo wall-demo" aria-hidden="true"><i></i><i class="p1"></i><i></i><i></i><i class="wl"></i><i></i><i></i><i class="p0"></i><i></i></div>
+      <ol>
+        <li>Papan 9×9. Pion kamu mulai di bawah dan harus sampai ke <b>baris paling atas</b>. Lawan sebaliknya.</li>
+        <li>Tiap giliran pilih satu: <b>jalan 1 kotak</b> (atas, bawah, kiri, kanan) atau <b>pasang 1 tembok</b>.</li>
+        <li>Tembok panjangnya 2 kotak dan menghalangi jalan. Tiap pemain punya <b>10 tembok</b>.</li>
+        <li>Tembok nggak boleh menutup jalan sama sekali. Harus selalu ada jalan ke tujuan buat dua pemain.</li>
+        <li>Kalau pion lawan tepat di depanmu, kamu boleh <b>lompati</b>. Kalau di belakangnya ada tembok, lompat serong ke samping.</li>
+        <li>Pertama yang sampai ke seberang menang.</li>
+      </ol>
+    </div>
+    <button class="btn big primary" data-close>Siap main</button>
+  </div>
+
+  <div class="sheet" id="sheet-settings" role="dialog" aria-modal="true" aria-labelledby="set-h" hidden>
+    <div class="sheet-head"><h2 id="set-h">Pengaturan</h2><button class="icon-btn" data-close aria-label="Tutup"><svg viewBox="0 0 16 16"><path d="M3 3h2v2h2v2h2V5h2V3h2v2h-2v2H9v2h2v2h2v2h-2v-2H9V9H7v2H5v2H3v-2h2V9h2V7H5V5H3z"/></svg></button></div>
+    <label class="toggle"><span>Suara</span><input type="checkbox" id="set-sound"><i></i></label>
+    <label class="toggle"><span>Getar</span><input type="checkbox" id="set-vibe"><i></i></label>
+    <button class="btn" id="set-reset">Hapus statistik</button>
+    <p class="muted small" id="set-version"></p>
+  </div>
+
+  <div class="sheet" id="sheet-over" role="dialog" aria-modal="true" aria-labelledby="over-h" hidden>
+    <div class="over-badge" id="over-badge" aria-hidden="true"></div>
+    <h2 id="over-h">Menang!</h2>
+    <p id="over-sub" class="muted"></p>
+    <div class="over-actions">
+      <button class="btn big primary" id="over-again">Main lagi</button>
+      <button class="btn big" id="over-menu">Menu</button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-confirm" role="dialog" aria-modal="true" aria-labelledby="conf-h" hidden>
+    <h2 id="conf-h"></h2>
+    <p id="conf-sub" class="muted"></p>
+    <div class="over-actions">
+      <button class="btn big primary" id="conf-yes"></button>
+      <button class="btn big" id="conf-no">Batal</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js" defer></script>
+<script src="js/config.js"></script>
+<script src="js/core.js"></script>
+<script src="js/push.js"></script>
+<script src="js/wall.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

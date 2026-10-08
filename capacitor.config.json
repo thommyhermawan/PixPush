@@ -1,0 +1,13 @@
+{
+  "appId": "com.thommyhermawan.pixpush",
+  "appName": "PixPush",
+  "webDir": "www",
+  "backgroundColor": "#2b2147",
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#2b2147"
+  }
+}
