@@ -7,7 +7,7 @@ Dua game strategi pixel dalam satu aplikasi:
 
 Bisa lawan komputer (Mudah, Sedang, Sulit), berdua di 1 HP, atau online lewat kode room.
 
-Versi web: https://thommyhermawan.github.io/pixpush/
+Versi web: https://thommyhermawan.github.io/PixPush/
 
 ---
 
@@ -42,7 +42,7 @@ Setiap kali ada perubahan di repo, file baru dibikin otomatis. Mau bikin ulang m
 1. Daftar di **play.google.com/console** (bayar sekali, verifikasi identitas).
 2. **Create app** → nama `PixPush`, bahasa Indonesia, jenis **Game**, **Free**.
 3. Isi bagian **App content**:
-   - Privacy policy: `https://thommyhermawan.github.io/pixpush/privacy.html`
+   - Privacy policy: `https://thommyhermawan.github.io/PixPush/privacy.html`
    - Ads: **Yes, my app contains ads**
    - Target audience: 13 tahun ke atas
    - Data safety: aplikasi tidak mengumpulkan data pribadi; iklan Google memakai ID perangkat (pilih sesuai panduan AdMob).

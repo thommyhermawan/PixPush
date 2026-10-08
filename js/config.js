@@ -3,7 +3,7 @@
 // (aman dipakai saat uji coba, nggak menghasilkan uang). Ganti ke false SETELAH ID asli kamu diisi.
 window.PIX_CONFIG = {
   VERSION: "1.0.0",
-  WEB_URL: "https://thommyhermawan.github.io/pixpush/",   // link versi web, dipakai buat ajak teman dari aplikasi
+  WEB_URL: "https://thommyhermawan.github.io/PixPush/",   // link versi web, dipakai buat ajak teman dari aplikasi
   PEER_PREFIX: "pixpush-v1-",
   FREE_UNDOS_PER_GAME: 1,       // undo gratis per game sebelum minta nonton iklan
   AD_EVERY_SECONDS: 90,         // jarak minimum antar iklan layar penuh
